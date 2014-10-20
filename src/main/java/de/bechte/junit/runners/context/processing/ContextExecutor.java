@@ -23,7 +23,7 @@ public class ContextExecutor implements ChildExecutor<Class<?>> {
 
     public void run(final TestClass rootClass, final TestClass testClass, final Class<?> clazz, final RunNotifier notifier) {
         try {
-            new HierarchicalContextRunner(clazz).run(notifier);
+            new HierarchicalContextRunner(rootClass, clazz).run(notifier);
         } catch (final Throwable t) {
             statementExecutor.execute(new Fail(t), notifier, describer.describe(clazz));
         }
