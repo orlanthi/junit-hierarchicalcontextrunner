@@ -3,6 +3,8 @@ package de.bechte.junit.runners.context.processing;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 import de.bechte.junit.runners.context.description.Describer;
 import de.bechte.junit.runners.context.statements.StatementExecutor;
+import de.bechte.junit.runners.model.TestClassPool;
+
 import org.junit.internal.runners.statements.Fail;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.TestClass;
@@ -23,7 +25,11 @@ public class ContextExecutor implements ChildExecutor<Class<?>> {
 
     public void run(final TestClass rootClass, final TestClass testClass, final Class<?> clazz, final RunNotifier notifier) {
         try {
-            new HierarchicalContextRunner(rootClass, clazz).run(notifier);
+            if (rootClass == null) {
+                new HierarchicalContextRunner(TestClassPool.forClass(clazz), clazz).run(notifier);
+            } else {
+                new HierarchicalContextRunner(rootClass, clazz).run(notifier);
+            }
         } catch (final Throwable t) {
             statementExecutor.execute(new Fail(t), notifier, describer.describe(clazz));
         }
