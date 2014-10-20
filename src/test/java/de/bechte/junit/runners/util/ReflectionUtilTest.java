@@ -99,7 +99,7 @@ public class ReflectionUtilTest {
     public void whenCreateDeepInstanceIsCalledWithNull_anIllegalArgumentExceptionIsThrown() throws Throwable {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Stack must not be null or empty!");
-        ReflectionUtil.createDeepInstance(null);
+        ReflectionUtil.createDeepInstance(null, null);
     }
 
     @Test
@@ -108,14 +108,14 @@ public class ReflectionUtilTest {
         thrown.expectMessage("Stack must not be null or empty!");
 
         Stack<Class<?>> emptyStack = new Stack<Class<?>>();
-        ReflectionUtil.createDeepInstance(emptyStack);
+        ReflectionUtil.createDeepInstance(null, emptyStack);
     }
 
     @Test
     public void whenCreateDeepInstanceIsCalledWithStackOfSize1_anInstanceOfThatObjectIsReturned() throws Throwable {
         Stack<Class<?>> classHierarchy = stackForClasses(Class1stLevel.class);
 
-        Object instance = ReflectionUtil.createDeepInstance(classHierarchy);
+        Object instance = ReflectionUtil.createDeepInstance(Class1stLevel.class, classHierarchy);
 
         assertThat(instance, is(notNullValue()));
         assertThat(instance, is(instanceOf(Class1stLevel.class)));
@@ -125,7 +125,7 @@ public class ReflectionUtilTest {
     public void whenCreateDeepInstanceIsCalledWithStackOfSize2_anInstanceOfThatObjectIsReturned() throws Throwable {
         Stack<Class<?>> classHierarchy = stackForClasses(Class1stLevel.Class2ndLevel.class, Class1stLevel.class);
 
-        Object instance = ReflectionUtil.createDeepInstance(classHierarchy);
+        Object instance = ReflectionUtil.createDeepInstance(Class1stLevel.class, classHierarchy);
 
         assertThat(instance, is(notNullValue()));
         assertThat(instance, is(instanceOf(Class1stLevel.Class2ndLevel.class)));
@@ -135,7 +135,7 @@ public class ReflectionUtilTest {
     public void whenCreateDeepInstanceIsCalledWithStackOfSize3_anInstanceOfThatObjectIsReturned() throws Throwable {
         Stack<Class<?>> classHierarchy = stackForClasses(Class1stLevel.Class2ndLevel.Class3rdLevel.class, Class1stLevel.Class2ndLevel.class, Class1stLevel.class);
 
-        Object instance = ReflectionUtil.createDeepInstance(classHierarchy);
+        Object instance = ReflectionUtil.createDeepInstance(Class1stLevel.class, classHierarchy);
 
         assertThat(instance, is(notNullValue()));
         assertThat(instance, is(instanceOf(Class1stLevel.Class2ndLevel.Class3rdLevel.class)));
@@ -146,7 +146,7 @@ public class ReflectionUtilTest {
         thrown.expect(InstantiationException.class);
 
         Stack<Class<?>> classHierarchy = stackForClasses(Class1stLevel.Class2ndLevel.Class3rdLevel.class);
-        Object instance = ReflectionUtil.createDeepInstance(classHierarchy);
+        Object instance = ReflectionUtil.createDeepInstance(Class1stLevel.Class2ndLevel.Class3rdLevel.class, classHierarchy);
     }
 
     @Test
@@ -154,6 +154,6 @@ public class ReflectionUtilTest {
         thrown.expect(NoSuchMethodException.class);
 
         Stack<Class<?>> classHierarchy = stackForClasses(Class1stLevel.Class2ndLevel.Class3rdLevel.class, Class1stLevel.class);
-        Object instance = ReflectionUtil.createDeepInstance(classHierarchy);
+        Object instance = ReflectionUtil.createDeepInstance(Class1stLevel.class, classHierarchy);
     }
 }

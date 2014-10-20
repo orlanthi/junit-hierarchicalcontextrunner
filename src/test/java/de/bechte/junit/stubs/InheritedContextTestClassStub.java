@@ -4,6 +4,7 @@ import org.junit.Test;
 
 public class InheritedContextTestClassStub extends ContextTestClassStub {
     public class I {
+        public String doIt() { return getIt(); };
         @Test
         public void innerTestMethod() throws Exception {
         }
@@ -12,4 +13,6 @@ public class InheritedContextTestClassStub extends ContextTestClassStub {
     @Test
     public void outerTestMethod() throws Exception {
     }
+    
+    public String getIt() { return "InheritedContextTestClassStub"; };
 }

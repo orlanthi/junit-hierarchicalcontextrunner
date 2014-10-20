@@ -33,7 +33,7 @@ public class ContextExecutorTest {
 
     @Test
     public void verifyNotificationsForExecutionOf_SimpleTestClass() throws Exception {
-        executor.run(null, SimpleTestClassStub.class, notifier);
+        executor.run(null, null, SimpleTestClassStub.class, notifier);
 
         verify(notifier, times(2)).fireTestStarted(any(Description.class));
         verify(notifier, times(1)).fireTestFailure(any(Failure.class));
@@ -43,7 +43,7 @@ public class ContextExecutorTest {
 
     @Test
     public void verifyNotificationsForExecutionOf_ContextTestClass() throws Exception {
-        executor.run(null, ContextTestClassStub.class, notifier);
+        executor.run(null, null, ContextTestClassStub.class, notifier);
 
         verify(notifier, times(3)).fireTestStarted(any(Description.class));
         verify(notifier, times(1)).fireTestFailure(any(Failure.class));
@@ -53,7 +53,7 @@ public class ContextExecutorTest {
 
     @Test
     public void verifyNotificationsForExecutionOf_EmptyTestClass() throws Exception {
-        executor.run(null, EmptyTestClassStub.class, notifier);
+        executor.run(null, null, EmptyTestClassStub.class, notifier);
 
         verify(notifier, times(2)).fireTestFailure(any(Failure.class));
         verifyNoMoreInteractions(notifier);

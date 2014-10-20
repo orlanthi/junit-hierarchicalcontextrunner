@@ -39,10 +39,10 @@ public class RunChildrenTest {
         Object child3 = new Object();
 
         when(childResolver.getChildren(testClass)).thenReturn(Arrays.asList(child1, child2, child3));
-        new RunChildren<Object>(testClass, childExecutor, childResolver, notifier).evaluate();
+        new RunChildren<Object>(testClass, testClass, childExecutor, childResolver, notifier).evaluate();
 
-        verify(childExecutor).run(testClass, child1, notifier);
-        verify(childExecutor).run(testClass, child2, notifier);
-        verify(childExecutor).run(testClass, child3, notifier);
+        verify(childExecutor).run(testClass, testClass, child1, notifier);
+        verify(childExecutor).run(testClass, testClass, child2, notifier);
+        verify(childExecutor).run(testClass, testClass, child3, notifier);
     }
 }

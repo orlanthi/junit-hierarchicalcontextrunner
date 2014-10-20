@@ -9,7 +9,7 @@ import java.lang.annotation.Annotation;
  * The {@link MethodDescriber} is responsible for creating the {@link Description} for a {@link FrameworkMethod}.
  */
 public class MethodDescriber implements Describer<FrameworkMethod> {
-    @Override
+
     public Description describe(final FrameworkMethod method) {
         if (method == null)
             throw new IllegalArgumentException("Method must not be null!");

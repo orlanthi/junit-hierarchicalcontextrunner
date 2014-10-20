@@ -69,14 +69,19 @@ public final class ReflectionUtil {
      * @return the newly created instance
      * @throws Throwable if errors occurred during construction of the instance
      */
-    public static Object createDeepInstance(final Stack<Class<?>> classHierarchy) throws Throwable {
+    public static Object createDeepInstance(final Class<?> rootClass, final Stack<Class<?>> classHierarchy) throws Throwable {
         if (classHierarchy == null || classHierarchy.isEmpty())
             throw new IllegalArgumentException("Stack must not be null or empty!");
 
         try {
             // Top level class has empty constructor
             Class<?> outerClass = classHierarchy.pop();
-            Object test = outerClass.newInstance();
+            Object test;
+            if (outerClass.isAssignableFrom(rootClass)) {
+                test = rootClass.newInstance();
+            } else {
+                test = outerClass.newInstance();
+            }
 
             // Inner class constructors require the enclosing instance
             while (!classHierarchy.empty()) {

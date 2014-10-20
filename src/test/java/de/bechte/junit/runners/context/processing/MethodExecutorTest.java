@@ -80,7 +80,7 @@ public class MethodExecutorTest {
     public void whenCalledForMethodWithIgnoreAnnotation_testIsIgnored() throws Exception {
         when(method.getAnnotation(Ignore.class)).thenReturn(ignoreAnnotation);
 
-        methodExecutor.run(testClass, method, notifier);
+        methodExecutor.run(testClass, testClass, method, notifier);
 
         verifyNoMoreInteractions(statementExecutor);
         verify(notifier).fireTestIgnored(description);
@@ -89,7 +89,7 @@ public class MethodExecutorTest {
 
     @Test
     public void whenCalledForMethod_statementExecutorIsExecutedWithAStatement() throws Exception {
-        methodExecutor.run(testClass, method, notifier);
+        methodExecutor.run(testClass, testClass, method, notifier);
 
         verify(statementExecutor).execute(any(Statement.class), same(notifier), same(description));
         verifyNoMoreInteractions(statementExecutor);
@@ -98,7 +98,7 @@ public class MethodExecutorTest {
 
     @Test
     public void whenCalledForMethod_statementBuildersAreExecuted() throws Exception {
-        methodExecutor.run(testClass, method, notifier);
+        methodExecutor.run(testClass, testClass, method, notifier);
 
         verify(methodStatementBuilder1).createStatement(same(testClass), same(method), any(Object.class), any(Statement.class), same(description), same(notifier));
         verify(methodStatementBuilder2).createStatement(same(testClass), same(method), any(Object.class), same(statement1), same(description), same(notifier));
@@ -113,7 +113,7 @@ public class MethodExecutorTest {
     public void whenStatementExecutorThrowsException_failureIsReportedAtTheNotifier() throws Exception {
         doThrow(new RuntimeException("")).when(statementExecutor).execute(statement2, notifier, description);
 
-        methodExecutor.run(testClass, method, notifier);
+        methodExecutor.run(testClass, testClass, method, notifier);
 
         verify(statementExecutor).execute(isA(Fail.class), same(notifier), same(description));
         verifyNoMoreInteractions(notifier);

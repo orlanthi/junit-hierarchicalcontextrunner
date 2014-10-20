@@ -66,14 +66,14 @@ public class MethodExecutor implements ChildExecutor<FrameworkMethod> {
         this.statementBuilders = statementBuilders;
     }
 
-    public void run(final TestClass testClass, final FrameworkMethod method, final RunNotifier notifier) {
+    public void run(final TestClass rootClass, final TestClass testClass, final FrameworkMethod method, final RunNotifier notifier) {
         final Description description = describer.describe(method);
         if (method.getAnnotation(Ignore.class) != null) {
             notifier.fireTestIgnored(description);
         } else {
             try {
                 final Stack<Class<?>> classHierarchy = getClassHierarchy(testClass.getJavaClass());
-                final Object target = createDeepInstance(classHierarchy);
+                final Object target = createDeepInstance(rootClass.getJavaClass(), classHierarchy);
 
                 Statement statement = buildStatement(testClass, method, target, description, notifier);
                 for (final MethodStatementBuilder builder : statementBuilders) {

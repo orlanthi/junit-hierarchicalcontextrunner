@@ -19,13 +19,15 @@ import java.util.List;
  * @param <T> the type to run
  */
 public class RunChildren<T extends Object> extends Statement {
+    private final TestClass rootClass;
     private final TestClass testClass;
     private final ChildExecutor<T> childExecutor;
     private final ChildResolver<T> childResolver;
     private final RunNotifier notifier;
 
-    public RunChildren(final TestClass testClass, final ChildExecutor<T> childExecutor,
+    public RunChildren(final TestClass rootClass, final TestClass testClass, final ChildExecutor<T> childExecutor,
                        final ChildResolver<T> childResolver, final RunNotifier notifier) {
+        this.rootClass = rootClass;
         this.testClass = testClass;
         this.childExecutor = childExecutor;
         this.childResolver = childResolver;
@@ -35,6 +37,6 @@ public class RunChildren<T extends Object> extends Statement {
     @Override
     public void evaluate() throws Throwable {
         for (final T child : childResolver.getChildren(testClass))
-            childExecutor.run(testClass, child, notifier);
+            childExecutor.run(rootClass, testClass, child, notifier);
     }
 }

@@ -41,6 +41,9 @@ import java.util.List;
  * https://github.com/bechte/junit-hierarchicalcontextrunner/wiki
  */
 public class HierarchicalContextRunner extends Runner {
+    
+    protected final TestClass rootClass;
+
     protected final TestClass testClass;
 
     protected ChildResolver<FrameworkMethod> methodResolver;
@@ -53,6 +56,11 @@ public class HierarchicalContextRunner extends Runner {
     protected List<ClassStatementBuilder> statementBuilders;
 
     public HierarchicalContextRunner(final Class<?> testClass) throws InitializationError {
+        this(TestClassPool.forClass(testClass), testClass);
+    }
+
+    public HierarchicalContextRunner(final TestClass rootClass, final Class<?> testClass) throws InitializationError {
+        this.rootClass = rootClass;
         this.testClass = TestClassPool.forClass(testClass);
 
         validate();
@@ -150,8 +158,8 @@ public class HierarchicalContextRunner extends Runner {
      */
     protected Statement runChildren(final Description description, final RunNotifier notifier) {
         return new RunAll(
-            new RunChildren<FrameworkMethod>(testClass, methodRunner, methodResolver, notifier),
-            new RunChildren<Class<?>>(testClass, contextRunner, contextResolver, notifier)
+            new RunChildren<FrameworkMethod>(rootClass, testClass, methodRunner, methodResolver, notifier),
+            new RunChildren<Class<?>>(rootClass, testClass, contextRunner, contextResolver, notifier)
         );
     }
 }

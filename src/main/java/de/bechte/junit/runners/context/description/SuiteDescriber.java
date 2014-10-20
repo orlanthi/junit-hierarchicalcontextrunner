@@ -17,7 +17,6 @@ public class SuiteDescriber implements Describer<Class<?>> {
         this.childResolver = childResolver;
     }
 
-    @Override
     public Description describe(final Class<?> suiteClass) {
         if (suiteClass == null)
             throw new IllegalArgumentException("Class must not be null!");

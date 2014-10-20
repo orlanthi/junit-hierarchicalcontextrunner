@@ -17,5 +17,5 @@ public interface ChildExecutor<T extends Object> {
      * @param object the object of type T
      * @param notifier the {@link RunNotifier} to be notified
      */
-    public abstract void run(final TestClass testClass, final T object, final RunNotifier notifier);
+    public abstract void run(final TestClass rootClass, final TestClass testClass, final T object, final RunNotifier notifier);
 }
